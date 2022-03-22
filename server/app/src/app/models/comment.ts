@@ -1,6 +1,6 @@
 export interface IComment {
-    Id: number;
-    Name: string;
-    Created: Date;
-    Message: string;
+    id?: number;
+    name: string;
+    created: Date;
+    message: string;
 }

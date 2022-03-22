@@ -1,29 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IComment } from './models/comment';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AppService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   rootURL = 'http://localhost:3080';
 
-  getComments() {
-    return this.http.get(this.rootURL + '/getComments');
+  getComments(): Observable<IComment[]> {
+    return this.http.get<IComment[]>(this.rootURL + '/getComments');
   }
 
-  getSingleComment(id: number) {
-    return this.http.get(this.rootURL + '/getComment');
+  getSingleComment(id: number): Observable<IComment> {
+    return this.http.get<IComment>(this.rootURL + '/getComment');
   }
 
-  addComment(comment: IComment) {
-    return this.http.post(this.rootURL + '/createComment', {comment});
+  addComment(comment: IComment): Observable<IComment> {
+    return this.http.post<IComment>(this.rootURL + '/createComment', {
+      comment,
+    });
   }
 
-  deleteComments() {
-    return this.http.delete(this.rootURL + '/deleteComments');
+  deleteComments(): Observable<IComment[]> {
+    return this.http.delete<IComment[]>(this.rootURL + '/deleteComments');
   }
 }
