@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import * as moment from 'moment';
 import { AppService } from './app.service';
 import { IComment } from './models/comment';
 
@@ -9,7 +10,6 @@ import { IComment } from './models/comment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
   commentForm = new FormGroup({
     name: new FormControl(""),
     comment: new FormControl("")
@@ -25,13 +25,22 @@ export class AppComponent {
   getComments() {
     this.appService.getComments().subscribe((comments) => {
         this.commentList = comments;
+        this.commentList.forEach(c => {
+          c.created = moment(c.created).format('LLLL');  
+        });
+    });
+  }
+
+  deleteComments() {
+    this.appService.deleteComments().subscribe(() => {
+      this.getComments();
     });
   }
 
   submit() {
     const request: IComment = {
       name: this.commentForm.get("name").value,
-      created: new Date,
+      created: moment().format(),
       message: this.commentForm.get("comment").value
     };
     console.log(request);
